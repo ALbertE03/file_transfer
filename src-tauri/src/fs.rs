@@ -352,7 +352,7 @@ pub async fn rename_remote_item(device_id: String, old_path: String, new_path: S
 #[tauri::command]
 pub fn get_home_directories() -> Result<(String, String), String> {
     let local_home = std::env::var("HOME").unwrap_or_else(|_| "/Users".to_string());
-    let remote_home = "/storage".to_string();
+    let remote_home = "/storage/emulated/0".to_string();
     Ok((local_home, remote_home))
 }
 

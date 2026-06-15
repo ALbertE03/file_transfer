@@ -28,6 +28,7 @@ export interface ProgressPayload {
   index: number;
   total: number;
   percentage: number;
+  speed: string;
   status: "running" | "completed" | "error";
   error_message: string | null;
 }

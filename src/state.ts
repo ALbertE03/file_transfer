@@ -40,6 +40,7 @@ export let progressCountEl: HTMLElement;
 export let progressFileEl: HTMLElement;
 export let progressFillEl: HTMLElement;
 export let progressPercentEl: HTMLElement;
+export let progressSpeedEl: HTMLElement;
 
 export let btnLocalNewFolder: HTMLButtonElement;
 export let btnLocalRename: HTMLButtonElement;
@@ -91,6 +92,7 @@ export function initDom() {
   progressFileEl = document.querySelector("#progress-file") as HTMLElement;
   progressFillEl = document.querySelector("#progress-fill") as HTMLElement;
   progressPercentEl = document.querySelector("#progress-percent") as HTMLElement;
+  progressSpeedEl = document.querySelector("#progress-speed") as HTMLElement;
 
   btnLocalNewFolder = document.querySelector("#btn-local-new-folder") as HTMLButtonElement;
   btnLocalRename = document.querySelector("#btn-local-rename") as HTMLButtonElement;

@@ -51,6 +51,7 @@ pub struct ProgressPayload {
     pub index: usize,
     pub total: usize,
     pub percentage: u32,
+    pub speed: String,
     pub status: String,
     pub error_message: Option<String>,
 }

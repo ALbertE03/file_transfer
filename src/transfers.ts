@@ -4,7 +4,7 @@ import { ProgressPayload } from "./types";
 import {
   selectedLocalPaths, selectedRemotePaths, selectedDeviceSerial, localPath, remotePath,
   btnPushEl, btnPullEl,
-  progressOverlayEl, progressTitleEl, progressCountEl, progressFileEl, progressFillEl, progressPercentEl,
+  progressOverlayEl, progressTitleEl, progressCountEl, progressFileEl, progressFillEl, progressPercentEl, progressSpeedEl,
 } from "./state";
 import { loadLocalFiles } from "./local";
 import { loadRemoteFiles } from "./remote";
@@ -20,6 +20,7 @@ export async function setupProgressChannel() {
       progressFileEl.textContent = payload.current_file;
       progressFillEl.style.width = `${payload.percentage}%`;
       progressPercentEl.textContent = `${payload.percentage}%`;
+      progressSpeedEl.textContent = payload.speed ? `Speed: ${payload.speed}` : "";
     } else if (payload.status === "completed") {
       progressOverlayEl.style.display = "none";
       loadLocalFiles(localPath);
