@@ -119,30 +119,71 @@ export function showRenameModal(isLocal: boolean) {
   document.body.appendChild(modal);
 }
 
-export function showDeleteConfirmModal(isLocal: boolean) {
+function showConfirmModal(message: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const modalDiv = document.createElement("div");
+    modalDiv.className = "modal";
+
+    const content = document.createElement("div");
+    content.className = "modal-content";
+    content.style.width = "400px";
+
+    const p = document.createElement("p");
+    p.textContent = message;
+    p.style.marginBottom = "1.25rem";
+    p.style.lineHeight = "1.5";
+    p.style.whiteSpace = "pre-line";
+    content.appendChild(p);
+
+    const buttons = document.createElement("div");
+    buttons.className = "modal-buttons";
+
+    const cancelBtn = document.createElement("button");
+    cancelBtn.className = "btn-modal";
+    cancelBtn.textContent = "Cancel";
+    cancelBtn.addEventListener("click", () => {
+      modalDiv.remove();
+      resolve(false);
+    });
+    buttons.appendChild(cancelBtn);
+
+    const confirmBtn = document.createElement("button");
+    confirmBtn.className = "btn-modal confirm";
+    confirmBtn.textContent = "Delete";
+    confirmBtn.addEventListener("click", () => {
+      modalDiv.remove();
+      resolve(true);
+    });
+    buttons.appendChild(confirmBtn);
+
+    content.appendChild(buttons);
+    modalDiv.appendChild(content);
+    document.body.appendChild(modalDiv);
+  });
+}
+
+export async function showDeleteConfirmModal(isLocal: boolean) {
   const selectedPaths = isLocal ? selectedLocalPaths : selectedRemotePaths;
   if (selectedPaths.size === 0) return;
 
   const count = selectedPaths.size;
   const msg = `Are you sure you want to delete ${count} selected item(s)?\nThis action cannot be undone.`;
-  if (confirm(msg)) {
-    const paths = Array.from(selectedPaths);
+  const confirmed = await showConfirmModal(msg);
+  if (!confirmed) return;
 
-    (async () => {
-      try {
-        if (isLocal) {
-          await invoke("delete_local_items", { paths });
-          loadLocalFiles(localPath);
-        } else {
-          await invoke("delete_remote_items", {
-            deviceId: selectedDeviceSerial,
-            paths
-          });
-          loadRemoteFiles(remotePath);
-        }
-      } catch (err) {
-        alert(`Error deleting items:\n${err}`);
-      }
-    })();
+  const paths = Array.from(selectedPaths);
+  try {
+    if (isLocal) {
+      await invoke("delete_local_items", { paths });
+      loadLocalFiles(localPath);
+    } else {
+      await invoke("delete_remote_items", {
+        deviceId: selectedDeviceSerial,
+        paths
+      });
+      loadRemoteFiles(remotePath);
+    }
+  } catch (err) {
+    alert(`Error deleting items:\n${err}`);
   }
 }
