@@ -23,6 +23,11 @@
   --danger: #ef4444;
   --danger-subtle: rgba(239, 68, 68, 0.12);
 
+  --push: #6366f1;
+  --push-subtle: rgba(99, 102, 241, 0.12);
+  --pull: #06b6d4;
+  --pull-subtle: rgba(6, 182, 212, 0.12);
+
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-size: 13px;
   --radius: 8px;
@@ -411,20 +416,34 @@ header {
   transition: all 0.2s;
 }
 
-.btn-transfer:hover:not(:disabled) {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: var(--primary-subtle);
+.btn-transfer.push {
+  color: var(--push);
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
-.btn-transfer:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
+.btn-transfer.pull {
+  color: var(--pull);
+  border-color: rgba(6, 182, 212, 0.3);
+}
+
+.btn-transfer.push:hover:not(:disabled) {
+  background: var(--push-subtle);
+  border-color: var(--push);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
 }
 
 .btn-transfer.pull:hover:not(:disabled) {
-  border-color: var(--primary);
-  color: var(--primary);
+  background: var(--pull-subtle);
+  border-color: var(--pull);
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+}
+
+.btn-transfer:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+  border-color: var(--border-color);
+  color: var(--text-muted);
+  box-shadow: none;
 }
 
 .btn-transfer svg {
@@ -454,10 +473,10 @@ header {
 }
 
 .btn-action {
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--bg-hover);
   border: 1px solid var(--border-color);
-  color: var(--text-muted);
-  padding: 0.2rem 0.5rem;
+  color: var(--text-secondary);
+  padding: 0.25rem 0.6rem;
   border-radius: var(--radius-sm);
   font-size: 0.75rem;
   font-weight: 500;
@@ -466,13 +485,13 @@ header {
 }
 
 .btn-action:hover:not(:disabled) {
-  background: var(--bg-hover);
-  color: var(--text-secondary);
+  background: var(--bg-active);
   border-color: var(--border-hover);
+  color: var(--text-primary);
 }
 
 .btn-action:disabled {
-  opacity: 0.35;
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
