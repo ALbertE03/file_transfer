@@ -4,6 +4,18 @@ use tokio::process::Command;
 use crate::types::Device;
 
 pub fn get_adb_path() -> String {
+    if let Ok(exe) = std::env::current_exe() {
+        if let Some(dir) = exe.parent() {
+            let bundled = dir.join("adb");
+            if bundled.exists() {
+                return bundled.to_string_lossy().to_string();
+            }
+            let resources = dir.join("Resources").join("adb");
+            if resources.exists() {
+                return resources.to_string_lossy().to_string();
+            }
+        }
+    }
     if std::process::Command::new("adb").arg("--version").output().is_ok() {
         return "adb".to_string();
     }
