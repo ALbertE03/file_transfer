@@ -47,13 +47,8 @@ jobs:
       - name: Build (Tauri)
         run: npm run tauri build -- --target ${{ matrix.target }}
         env:
+          TAURI_SKIP_CODESIGNING: "true"
           TAURI_SIGNING_PRIVATE_KEY: ""
-          APPLE_CERTIFICATE: ""
-          APPLE_CERTIFICATE_PASSWORD: ""
-          APPLE_SIGNING_IDENTITY: ""
-          APPLE_ID: ""
-          APPLE_PASSWORD: ""
-          APPLE_TEAM_ID: ""
           NOTARY_PROFILE_NAME: ""
 
       - name: Locate DMG
