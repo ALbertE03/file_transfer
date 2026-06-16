@@ -21,10 +21,21 @@ export async function setupProgressChannel() {
       progressFillEl.style.width = `${payload.percentage}%`;
       progressPercentEl.textContent = `${payload.percentage}%`;
       progressSpeedEl.textContent = payload.speed ? `Speed: ${payload.speed}` : "";
+    } else if (payload.status === "file_ok") {
+      loadLocalFiles(localPath);
+      loadRemoteFiles(remotePath);
+      progressCountEl.textContent = `${payload.index} / ${payload.total}`;
+    } else if (payload.status === "file_error") {
+      loadLocalFiles(localPath);
+      loadRemoteFiles(remotePath);
+      console.error("File error:", payload.error_message);
     } else if (payload.status === "completed") {
       progressOverlayEl.style.display = "none";
       loadLocalFiles(localPath);
       loadRemoteFiles(remotePath);
+      if (payload.error_message) {
+        alert(`Transfer completed with errors:\n${payload.error_message}`);
+      }
     } else if (payload.status === "error") {
       progressOverlayEl.style.display = "none";
       alert(`Transfer Error:\n${payload.error_message}`);

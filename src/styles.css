@@ -32,6 +32,35 @@
   --radius-sm: 6px;
 }
 
+[data-theme="light"] {
+  --bg-primary: #f5f5f7;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-hover: #e8e8ed;
+  --bg-active: #d1d1d6;
+  --border-color: #d1d1d6;
+  --border-hover: #a1a1aa;
+
+  --text-primary: #1d1d1f;
+  --text-secondary: #424245;
+  --text-muted: #86868b;
+
+  --primary: #4f46e5;
+  --primary-hover: #6366f1;
+  --primary-subtle: rgba(79, 70, 229, 0.08);
+  --primary-glow: rgba(79, 70, 229, 0.15);
+
+  --success: #1a8a3c;
+  --warning: #d97706;
+  --danger: #c41e3a;
+  --danger-subtle: rgba(196, 30, 58, 0.08);
+
+  --push: #4f46e5;
+  --push-subtle: rgba(79, 70, 229, 0.08);
+  --pull: #0e7c8a;
+  --pull-subtle: rgba(14, 124, 138, 0.08);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -167,6 +196,49 @@ header {
 .btn-refresh:hover {
   border-color: var(--border-hover);
   color: var(--text-secondary);
+}
+
+.btn-theme {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.btn-theme:hover {
+  border-color: var(--border-hover);
+  color: var(--text-secondary);
+}
+
+.theme-select {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.3rem 1.5rem 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.4rem center;
+  background-size: 0.8rem;
+  min-width: 110px;
+}
+
+.theme-select:focus {
+  border-color: var(--primary);
 }
 
 .btn-refresh svg {

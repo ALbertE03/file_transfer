@@ -262,98 +262,87 @@ pub async fn copy_files(
         file_info.push((file_name, size));
     }
 
+    let mut join_set = tokio::task::JoinSet::new();
+
     for (index, source) in sources.iter().enumerate() {
         let (file_name, file_size) = &file_info[index];
-
-        app.emit(
-            "transfer-progress",
-            ProgressPayload {
-                current_file: file_name.clone(),
-                index: index + 1,
-                total,
-                percentage: 0,
-                speed: String::new(),
-                status: "running".to_string(),
-                error_message: None,
-            },
-        )
-        .ok();
-
         let dest_path = format!("{}/{}", destination.trim_end_matches('/'), file_name);
 
-        let result = if direction == "push" {
-            push_file(
-                &adb,
-                &device_id,
-                source,
-                &dest_path,
-                &app,
-                index,
-                total,
-                file_name,
-                *file_size,
-            )
-            .await
-        } else {
-            pull_file(
-                &adb,
-                &device_id,
-                source,
-                &dest_path,
-                &app,
-                index,
-                total,
-                file_name,
-                *file_size,
-            )
-            .await
-        };
+        let adb = adb.clone();
+        let device_id = device_id.clone();
+        let direction = direction.clone();
+        let source = source.clone();
+        let file_name = file_name.clone();
+        let app = app.clone();
+        let file_size = *file_size;
 
-        if let Err(e) = result {
-            app.emit(
-                "transfer-progress",
-                ProgressPayload {
-                    current_file: file_name.clone(),
-                    index: index + 1,
-                    total,
-                    percentage: 0,
-                    speed: String::new(),
-                    status: "error".to_string(),
-                    error_message: Some(e.clone()),
-                },
-            )
-            .ok();
-            return Err(e);
-        }
+        join_set.spawn(async move {
+            let result = if direction == "push" {
+                push_file(&adb, &device_id, &source, &dest_path, &app, index, total, &file_name, file_size).await
+            } else {
+                pull_file(&adb, &device_id, &source, &dest_path, &app, index, total, &file_name, file_size).await
+            };
 
-        app.emit(
-            "transfer-progress",
-            ProgressPayload {
-                current_file: file_name.clone(),
-                index: index + 1,
-                total,
-                percentage: 100,
-                speed: String::new(),
-                status: "running".to_string(),
-                error_message: None,
-            },
-        )
-        .ok();
+            match &result {
+                Ok(_) => {
+                    app.emit("transfer-progress", ProgressPayload {
+                        current_file: file_name.clone(),
+                        index: index + 1,
+                        total,
+                        percentage: 100,
+                        speed: String::new(),
+                        status: "file_ok".to_string(),
+                        error_message: None,
+                    }).ok();
+                }
+                Err(e) => {
+                    app.emit("transfer-progress", ProgressPayload {
+                        current_file: file_name.clone(),
+                        index: index + 1,
+                        total,
+                        percentage: 0,
+                        speed: String::new(),
+                        status: "file_error".to_string(),
+                        error_message: Some(e.clone()),
+                    }).ok();
+                }
+            }
+
+            result
+        });
     }
 
-    app.emit(
-        "transfer-progress",
-        ProgressPayload {
+    let mut errors: Vec<String> = Vec::new();
+    while let Some(result) = join_set.join_next().await {
+        match result {
+            Ok(Ok(())) => {}
+            Ok(Err(e)) => errors.push(e),
+            Err(_) => errors.push("Task panicked".to_string()),
+        }
+    }
+
+    if !errors.is_empty() {
+        app.emit("transfer-progress", ProgressPayload {
             current_file: String::new(),
             index: total,
             total,
             percentage: 100,
             speed: String::new(),
             status: "completed".to_string(),
-            error_message: None,
-        },
-    )
-    .ok();
+            error_message: Some(format!("{} of {} files failed", errors.len(), total)),
+        }).ok();
+        return Err(errors.join("\n"));
+    }
+
+    app.emit("transfer-progress", ProgressPayload {
+        current_file: String::new(),
+        index: total,
+        total,
+        percentage: 100,
+        speed: String::new(),
+        status: "completed".to_string(),
+        error_message: None,
+    }).ok();
 
     Ok(())
 }

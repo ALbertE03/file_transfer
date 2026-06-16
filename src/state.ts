@@ -62,6 +62,24 @@ export function setDevices(d: Device[]) { devices = d; }
 export function setLocalFiles(f: LocalFile[]) { localFiles = f; }
 export function setRemoteFiles(f: RemoteFile[]) { remoteFiles = f; }
 
+export type Theme = "dark" | "light" | "system";
+export let theme: Theme = "system";
+export let themeSelectEl: HTMLSelectElement;
+
+export function setTheme(t: Theme) {
+  theme = t;
+  localStorage.setItem("file-transfer-theme", t);
+  applyTheme(t);
+  if (themeSelectEl) themeSelectEl.value = t;
+}
+
+export function applyTheme(t: Theme) {
+  const effective = t === "system"
+    ? (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark")
+    : t;
+  document.documentElement.setAttribute("data-theme", effective);
+}
+
 export function initDom() {
   deviceSelectEl = document.querySelector("#device-select") as HTMLSelectElement;
   statusBadgeEl = document.querySelector("#status-badge") as HTMLElement;
@@ -101,4 +119,6 @@ export function initDom() {
   btnRemoteNewFolder = document.querySelector("#btn-remote-new-folder") as HTMLButtonElement;
   btnRemoteRename = document.querySelector("#btn-remote-rename") as HTMLButtonElement;
   btnRemoteDelete = document.querySelector("#btn-remote-delete") as HTMLButtonElement;
+
+  themeSelectEl = document.querySelector("#theme-select") as HTMLSelectElement;
 }
