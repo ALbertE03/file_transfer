@@ -7,7 +7,7 @@ import {
 } from "./state";
 import { formatBytes, getFolderIcon, getFileIcon, getSymlinkIcon, updateActionStates, renderBreadcrumbs, renderDisks } from "./ui";
 
-export async function loadRemoteFiles(path: string) {
+export async function loadRemoteFiles(path: string, keepSelection = false) {
   if (!selectedDeviceSerial) return;
   try {
     const list = await invoke<RemoteFile[]>("list_remote_files", {
@@ -17,8 +17,10 @@ export async function loadRemoteFiles(path: string) {
     setRemoteFiles(list);
     setRemotePath(path);
     remotePathInputEl.value = path;
-    selectedRemotePaths.clear();
-    remoteSelectAllEl.checked = false;
+    if (!keepSelection) {
+      selectedRemotePaths.clear();
+      remoteSelectAllEl.checked = false;
+    }
     renderRemoteTable();
     updateActionStates();
     renderBreadcrumbs(path, remoteBreadcrumbsEl, false, loadRemoteFiles);

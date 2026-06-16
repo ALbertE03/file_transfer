@@ -9,6 +9,8 @@ import {
 import { loadLocalFiles } from "./local";
 import { loadRemoteFiles } from "./remote";
 
+let activeTransfers = new Map<string, "push" | "pull">();
+
 function createRow(file: string): HTMLElement {
   const row = document.createElement("div");
   row.className = "progress-row";
@@ -71,10 +73,12 @@ function markRowError(file: string) {
 export async function setupProgressChannel() {
   await listen<ProgressPayload>("transfer-progress", (event) => {
     const p = event.payload;
+    const dir = activeTransfers.get(p.current_file) || "push";
 
     if (p.status === "running") {
       progressOverlayEl.style.display = "block";
       if (!progressListEl.querySelector(`[data-file="${CSS.escape(p.current_file)}"]`)) {
+        activeTransfers.set(p.current_file, dir);
         progressListEl.appendChild(createRow(p.current_file));
       }
       progressCountEl.textContent = `${p.index} / ${p.total}`;
@@ -82,28 +86,32 @@ export async function setupProgressChannel() {
     } else if (p.status === "file_ok") {
       markRowDone(p.current_file);
       progressCountEl.textContent = `${p.index} / ${p.total}`;
-      loadLocalFiles(localPath);
-      loadRemoteFiles(remotePath);
+      if (dir === "push") loadRemoteFiles(remotePath, true);
+      else loadLocalFiles(localPath, true);
+      activeTransfers.delete(p.current_file);
     } else if (p.status === "file_error") {
       markRowError(p.current_file);
       progressCountEl.textContent = `${p.index} / ${p.total}`;
       console.error("File error:", p.error_message);
-      loadLocalFiles(localPath);
-      loadRemoteFiles(remotePath);
+      if (dir === "push") loadRemoteFiles(remotePath, true);
+      else loadLocalFiles(localPath, true);
+      activeTransfers.delete(p.current_file);
     } else if (p.status === "completed") {
       progressOverlayEl.style.display = "none";
       progressListEl.innerHTML = "";
-      loadLocalFiles(localPath);
-      loadRemoteFiles(remotePath);
+      activeTransfers.clear();
+      loadLocalFiles(localPath, true);
+      loadRemoteFiles(remotePath, true);
       if (p.error_message) {
         setTimeout(() => alert(`Transfer completed with errors:\n${p.error_message}`), 100);
       }
     } else if (p.status === "error") {
       progressOverlayEl.style.display = "none";
       progressListEl.innerHTML = "";
+      activeTransfers.clear();
       alert(`Transfer Error:\n${p.error_message}`);
-      loadLocalFiles(localPath);
-      loadRemoteFiles(remotePath);
+      loadLocalFiles(localPath, true);
+      loadRemoteFiles(remotePath, true);
     }
   });
 }
@@ -113,10 +121,13 @@ export async function handlePush() {
   const sources = Array.from(selectedLocalPaths);
   const dest = remotePath;
 
+  sources.forEach(s => {
+    const name = s.split("/").pop() || s;
+    activeTransfers.set(name, "push");
+  });
+
   try {
     btnPushEl.disabled = true;
-    btnPullEl.disabled = true;
-
     await invoke("copy_files", {
       app: null,
       deviceId: selectedDeviceSerial,
@@ -128,7 +139,6 @@ export async function handlePush() {
     console.error("Push invocation error:", err);
   } finally {
     btnPushEl.disabled = false;
-    btnPullEl.disabled = false;
   }
 }
 
@@ -137,10 +147,13 @@ export async function handlePull() {
   const sources = Array.from(selectedRemotePaths);
   const dest = localPath;
 
-  try {
-    btnPushEl.disabled = true;
-    btnPullEl.disabled = true;
+  sources.forEach(s => {
+    const name = s.split("/").pop() || s;
+    activeTransfers.set(name, "pull");
+  });
 
+  try {
+    btnPullEl.disabled = true;
     await invoke("copy_files", {
       app: null,
       deviceId: selectedDeviceSerial,
@@ -151,7 +164,6 @@ export async function handlePull() {
   } catch (err) {
     console.error("Pull invocation error:", err);
   } finally {
-    btnPushEl.disabled = false;
     btnPullEl.disabled = false;
   }
 }

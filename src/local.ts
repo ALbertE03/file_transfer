@@ -7,14 +7,16 @@ import {
 } from "./state";
 import { formatBytes, getFolderIcon, getFileIcon, updateActionStates, renderBreadcrumbs, renderDisks } from "./ui";
 
-export async function loadLocalFiles(path: string) {
+export async function loadLocalFiles(path: string, keepSelection = false) {
   try {
     const list = await invoke<LocalFile[]>("list_local_files", { path });
     setLocalFiles(list);
     setLocalPath(path);
     localPathInputEl.value = path;
-    selectedLocalPaths.clear();
-    localSelectAllEl.checked = false;
+    if (!keepSelection) {
+      selectedLocalPaths.clear();
+      localSelectAllEl.checked = false;
+    }
     renderLocalTable();
     updateActionStates();
     renderBreadcrumbs(path, localBreadcrumbsEl, true, loadLocalFiles);
