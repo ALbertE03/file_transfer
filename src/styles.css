@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
 :root {
   --bg-primary: #0f1117;
   --bg-secondary: #1a1d27;
@@ -28,7 +26,7 @@
   --pull: #06b6d4;
   --pull-subtle: rgba(6, 182, 212, 0.12);
 
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'Helvetica Neue', sans-serif;
   --font-size: 13px;
   --radius: 8px;
   --radius-sm: 6px;
