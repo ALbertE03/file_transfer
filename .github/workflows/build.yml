@@ -56,11 +56,15 @@ jobs:
           dmg=$(find src-tauri/target/${{ matrix.target }}/release/bundle/dmg -name "*.dmg" | head -1)
           echo "DMG_PATH=$dmg" >> $GITHUB_ENV
 
+      - name: Rename DMG
+        run: |
+          cp "${{ env.DMG_PATH }}" "${{ matrix.artifact }}"
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
-          path: ${{ env.DMG_PATH }}
+          path: ${{ matrix.artifact }}
           if-no-files-found: error
 
   release:
