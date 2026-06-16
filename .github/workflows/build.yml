@@ -20,7 +20,7 @@ jobs:
       matrix:
         include:
           - target: x86_64-apple-darwin
-            runner: macos-13
+            runner: macos-26-intel
             artifact: file_transfer-x86_64.dmg
           - target: aarch64-apple-darwin
             runner: macos-latest
