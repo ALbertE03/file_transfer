@@ -756,7 +756,10 @@ header {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  width: 340px;
+  width: 380px;
+  max-height: 50vh;
+  display: flex;
+  flex-direction: column;
   padding: 1rem 1.15rem;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
   z-index: 1000;
@@ -772,7 +775,8 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  flex-shrink: 0;
 }
 
 .progress-title {
@@ -785,36 +789,74 @@ header {
   color: var(--text-muted);
 }
 
-.progress-file {
-  font-size: 0.8rem;
+.progress-list {
+  overflow-y: auto;
+  max-height: 35vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.progress-list::-webkit-scrollbar { width: 3px; }
+.progress-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 2px; }
+
+.progress-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.progress-row:last-child {
+  border-bottom: none;
+}
+
+.progress-row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.progress-row-file {
+  font-size: 0.75rem;
   color: var(--text-secondary);
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  margin-bottom: 0.5rem;
+  flex: 1;
+  min-width: 0;
 }
 
-.progress-track {
-  height: 4px;
+.progress-row-status {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.progress-row-track {
+  height: 3px;
   background: var(--bg-primary);
   border-radius: 2px;
   overflow: hidden;
-  margin-bottom: 0.4rem;
 }
 
-.progress-fill {
+.progress-row-fill {
   height: 100%;
   width: 0%;
   background: var(--primary);
   border-radius: 2px;
-  transition: width 0.15s ease;
+  transition: width 0.2s ease;
 }
 
-.progress-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.7rem;
-  color: var(--text-muted);
+.progress-row-fill.ok {
+  background: var(--success);
+}
+
+.progress-row-fill.error {
+  background: var(--danger);
 }
 
 .drives-container {

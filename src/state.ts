@@ -35,12 +35,8 @@ export let btnPullEl: HTMLButtonElement;
 
 export let onboardingOverlayEl: HTMLElement;
 export let progressOverlayEl: HTMLElement;
-export let progressTitleEl: HTMLElement;
 export let progressCountEl: HTMLElement;
-export let progressFileEl: HTMLElement;
-export let progressFillEl: HTMLElement;
-export let progressPercentEl: HTMLElement;
-export let progressSpeedEl: HTMLElement;
+export let progressListEl: HTMLElement;
 
 export let btnLocalNewFolder: HTMLButtonElement;
 export let btnLocalRename: HTMLButtonElement;
@@ -105,12 +101,8 @@ export function initDom() {
 
   onboardingOverlayEl = document.querySelector("#onboarding-overlay") as HTMLElement;
   progressOverlayEl = document.querySelector("#progress-overlay") as HTMLElement;
-  progressTitleEl = document.querySelector("#progress-title") as HTMLElement;
   progressCountEl = document.querySelector("#progress-count") as HTMLElement;
-  progressFileEl = document.querySelector("#progress-file") as HTMLElement;
-  progressFillEl = document.querySelector("#progress-fill") as HTMLElement;
-  progressPercentEl = document.querySelector("#progress-percent") as HTMLElement;
-  progressSpeedEl = document.querySelector("#progress-speed") as HTMLElement;
+  progressListEl = document.querySelector("#progress-list") as HTMLElement;
 
   btnLocalNewFolder = document.querySelector("#btn-local-new-folder") as HTMLButtonElement;
   btnLocalRename = document.querySelector("#btn-local-rename") as HTMLButtonElement;
