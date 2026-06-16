@@ -5,6 +5,8 @@ import {
   btnPushEl, btnPullEl,
   btnLocalRename, btnLocalDelete,
   btnRemoteRename, btnRemoteDelete,
+  localSelectAllEl, remoteSelectAllEl,
+  localFileListEl, remoteFileListEl,
 } from "./state";
 
 export function formatBytes(bytes: number): string {
@@ -39,6 +41,11 @@ export function updateActionStates() {
 
   btnRemoteRename.disabled = selectedRemotePaths.size !== 1;
   btnRemoteDelete.disabled = selectedRemotePaths.size === 0;
+
+  const localChecks = localFileListEl.querySelectorAll<HTMLInputElement>("input[type=checkbox]");
+  const remoteChecks = remoteFileListEl.querySelectorAll<HTMLInputElement>("input[type=checkbox]");
+  localSelectAllEl.checked = localChecks.length > 0 && Array.from(localChecks).every(c => c.checked);
+  remoteSelectAllEl.checked = remoteChecks.length > 0 && Array.from(remoteChecks).every(c => c.checked);
 }
 
 export function renderBreadcrumbs(

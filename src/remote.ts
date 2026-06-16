@@ -2,7 +2,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { RemoteFile, DiskInfo } from "./types";
 import {
   remoteFiles, remotePath, selectedRemotePaths, selectedDeviceSerial,
-  remotePathInputEl, remoteFileListEl, remoteBreadcrumbsEl, remoteDrivesEl,
+  remotePathInputEl, remoteFileListEl, remoteBreadcrumbsEl, remoteDrivesEl, remoteSelectAllEl,
   setRemoteFiles, setRemotePath,
 } from "./state";
 import { formatBytes, getFolderIcon, getFileIcon, getSymlinkIcon, updateActionStates, renderBreadcrumbs, renderDisks } from "./ui";
@@ -18,6 +18,7 @@ export async function loadRemoteFiles(path: string) {
     setRemotePath(path);
     remotePathInputEl.value = path;
     selectedRemotePaths.clear();
+    remoteSelectAllEl.checked = false;
     renderRemoteTable();
     updateActionStates();
     renderBreadcrumbs(path, remoteBreadcrumbsEl, false, loadRemoteFiles);
@@ -135,4 +136,25 @@ async function loadRemoteDisks() {
   } catch (err) {
     console.error("Error loading remote disks:", err);
   }
+}
+
+export function setupRemoteSelectAll() {
+  remoteSelectAllEl.addEventListener("change", () => {
+    const checkboxes = remoteFileListEl.querySelectorAll<HTMLInputElement>("input[type=checkbox]");
+    checkboxes.forEach((chk) => {
+      const tr = chk.closest("tr") as HTMLElement;
+      const path = tr?.dataset.path;
+      if (!path) return;
+      if (remoteSelectAllEl.checked) {
+        chk.checked = true;
+        selectedRemotePaths.add(path);
+        tr.classList.add("selected");
+      } else {
+        chk.checked = false;
+        selectedRemotePaths.delete(path);
+        tr.classList.remove("selected");
+      }
+    });
+    updateActionStates();
+  });
 }

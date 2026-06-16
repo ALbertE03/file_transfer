@@ -1,14 +1,16 @@
 import { invoke } from "@tauri-apps/api/core";
 import { initDom, localPath, remotePath, localPathInputEl, remotePathInputEl, btnRefreshEl, deviceSelectEl, localUpBtnEl, remoteUpBtnEl, btnLocalNewFolder, btnLocalRename, btnLocalDelete, btnRemoteNewFolder, btnRemoteRename, btnRemoteDelete, btnPushEl, btnPullEl, themeSelectEl, setTheme, applyTheme, setLocalPath, setRemotePath, theme, Theme } from "./state";
 import { setupPathEditing } from "./ui";
-import { loadLocalFiles, navigateLocalUp } from "./local";
-import { loadRemoteFiles, navigateRemoteUp } from "./remote";
+import { loadLocalFiles, navigateLocalUp, setupLocalSelectAll } from "./local";
+import { loadRemoteFiles, navigateRemoteUp, setupRemoteSelectAll } from "./remote";
 import { refreshDevices, handleDeviceSelectionChange } from "./devices";
 import { handlePush, handlePull, setupProgressChannel } from "./transfers";
 import { showCreateFolderModal, showRenameModal, showDeleteConfirmModal } from "./modals";
 
 window.addEventListener("DOMContentLoaded", async () => {
   initDom();
+  setupLocalSelectAll();
+  setupRemoteSelectAll();
 
   const saved = localStorage.getItem("file-transfer-theme") as Theme | null;
   if (saved) setTheme(saved);

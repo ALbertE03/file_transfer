@@ -2,7 +2,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { LocalFile, DiskInfo } from "./types";
 import {
   localFiles, localPath, selectedLocalPaths,
-  localPathInputEl, localFileListEl, localBreadcrumbsEl, localDrivesEl,
+  localPathInputEl, localFileListEl, localBreadcrumbsEl, localDrivesEl, localSelectAllEl,
   setLocalFiles, setLocalPath,
 } from "./state";
 import { formatBytes, getFolderIcon, getFileIcon, updateActionStates, renderBreadcrumbs, renderDisks } from "./ui";
@@ -14,6 +14,7 @@ export async function loadLocalFiles(path: string) {
     setLocalPath(path);
     localPathInputEl.value = path;
     selectedLocalPaths.clear();
+    localSelectAllEl.checked = false;
     renderLocalTable();
     updateActionStates();
     renderBreadcrumbs(path, localBreadcrumbsEl, true, loadLocalFiles);
@@ -117,4 +118,25 @@ async function loadLocalDisks() {
   } catch (err) {
     console.error("Error loading local disks:", err);
   }
+}
+
+export function setupLocalSelectAll() {
+  localSelectAllEl.addEventListener("change", () => {
+    const checkboxes = localFileListEl.querySelectorAll<HTMLInputElement>("input[type=checkbox]");
+    checkboxes.forEach((chk) => {
+      const tr = chk.closest("tr") as HTMLElement;
+      const path = tr?.dataset.path;
+      if (!path) return;
+      if (localSelectAllEl.checked) {
+        chk.checked = true;
+        selectedLocalPaths.add(path);
+        tr.classList.add("selected");
+      } else {
+        chk.checked = false;
+        selectedLocalPaths.delete(path);
+        tr.classList.remove("selected");
+      }
+    });
+    updateActionStates();
+  });
 }

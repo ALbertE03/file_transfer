@@ -22,6 +22,7 @@ export let localFileListEl: HTMLTableSectionElement;
 export let localSelectionInfoEl: HTMLElement;
 export let localBreadcrumbsEl: HTMLElement;
 export let localDrivesEl: HTMLElement;
+export let localSelectAllEl: HTMLInputElement;
 
 export let remotePathInputEl: HTMLInputElement;
 export let remoteUpBtnEl: HTMLButtonElement;
@@ -29,6 +30,7 @@ export let remoteFileListEl: HTMLTableSectionElement;
 export let remoteSelectionInfoEl: HTMLElement;
 export let remoteBreadcrumbsEl: HTMLElement;
 export let remoteDrivesEl: HTMLElement;
+export let remoteSelectAllEl: HTMLInputElement;
 
 export let btnPushEl: HTMLButtonElement;
 export let btnPullEl: HTMLButtonElement;
@@ -88,6 +90,7 @@ export function initDom() {
   localSelectionInfoEl = document.querySelector("#local-selection-info") as HTMLElement;
   localBreadcrumbsEl = document.querySelector("#local-breadcrumbs") as HTMLElement;
   localDrivesEl = document.querySelector("#local-drives") as HTMLElement;
+  localSelectAllEl = document.querySelector("#local-select-all") as HTMLInputElement;
 
   remotePathInputEl = document.querySelector("#remote-path-input") as HTMLInputElement;
   remoteUpBtnEl = document.querySelector("#remote-up-btn") as HTMLButtonElement;
@@ -95,6 +98,7 @@ export function initDom() {
   remoteSelectionInfoEl = document.querySelector("#remote-selection-info") as HTMLElement;
   remoteBreadcrumbsEl = document.querySelector("#remote-breadcrumbs") as HTMLElement;
   remoteDrivesEl = document.querySelector("#remote-drives") as HTMLElement;
+  remoteSelectAllEl = document.querySelector("#remote-select-all") as HTMLInputElement;
 
   btnPushEl = document.querySelector("#btn-push") as HTMLButtonElement;
   btnPullEl = document.querySelector("#btn-pull") as HTMLButtonElement;
