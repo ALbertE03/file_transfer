@@ -1,5 +1,4 @@
 use std::path::Path;
-use tokio::process::Command;
 
 use crate::types::Device;
 
