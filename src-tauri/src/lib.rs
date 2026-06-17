@@ -10,9 +10,6 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
             adb::get_adb_devices,
-            adb::adb_connect,
-            adb::adb_pair,
-            adb::adb_enable_tcpip,
             fs::list_local_files,
             fs::list_remote_files,
             fs::create_local_directory,
