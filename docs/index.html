@@ -21,6 +21,7 @@
       </div>
       <nav>
         <a href="#features">Características</a>
+        <a href="#usage">Uso</a>
         <a href="#download">Descargar</a>
       </nav>
     </div>
@@ -41,9 +42,15 @@
         <h1>File Transfer</h1>
         <p class="hero-subtitle">
           Transfiere archivos entre macOS y dispositivos Android vía USB
-          con una interfaz nativa rápida y segura.
+          con una interfaz nativa rápida, segura y moderna.
         </p>
-        <a href="#download" class="btn-primary">Descargar</a>
+        <div class="hero-actions">
+          <a href="#download" class="btn-primary">Descargar</a>
+          <a href="https://github.com/ALbertE03/file_transfer" target="_blank" rel="noopener" class="btn-gh">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </div>
       </div>
     </section>
 
@@ -56,43 +63,138 @@
               <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/>
             </svg>
             <h3>Explorador Dual</h3>
-            <p>Navega archivos locales y remotos en paneles paralelos.</p>
+            <p>Navega archivos locales y remotos en paneles paralelos con vista de lista o cuadrícula.</p>
           </article>
           <article class="feature-card">
             <svg viewBox="0 0 24 24" fill="currentColor">
               <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
             </svg>
             <h3>Push / Pull</h3>
-            <p>Copia archivos en ambas direcciones con barra de progreso en tiempo real.</p>
+            <p>Copia archivos en ambas direcciones con barra de progreso en tiempo real y hasta 5 transferencias concurrentes.</p>
+          </article>
+          <article class="feature-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="4" width="4" height="16" rx="1"/>
+              <rect x="14" y="4" width="4" height="16" rx="1"/>
+            </svg>
+            <h3>Pausa / Reanudar</h3>
+            <p>Pausa y reanuda transferencias individualmente. Al reanudar retoma desde donde se quedó.</p>
+          </article>
+          <article class="feature-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+            <h3>Cancelar</h3>
+            <p>Cancela transferencias en curso. Los archivos parciales se eliminan automáticamente.</p>
           </article>
           <article class="feature-card">
             <svg viewBox="0 0 24 24" fill="currentColor">
               <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM6 20V4h5v7h7v9H6z"/>
             </svg>
             <h3>Operaciones de Archivos</h3>
-            <p>Crea, renombra y elimina carpetas y archivos en ambos lados.</p>
+            <p>Crea, renombra y elimina carpetas y archivos en ambos lados con confirmación.</p>
           </article>
           <article class="feature-card">
             <svg viewBox="0 0 24 24" fill="currentColor">
               <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l4.59-4.58L18 11l-6 6z"/>
             </svg>
             <h3>Selección Múltiple</h3>
-            <p>Selecciona varios archivos para copiar o eliminar a la vez.</p>
+            <p>Selecciona varios archivos con checkboxes o atajos de teclado para copiar o eliminar.</p>
           </article>
           <article class="feature-card">
             <svg viewBox="0 0 24 24" fill="currentColor">
               <path d="M15 3l2.3 2.3-2.89 2.87 1.42 1.42L18.7 6.7 21 9V3h-6zM3 9l2.3-2.3 2.87 2.89 1.42-1.42L6.7 5.3 9 3H3v6zm6 12l-2.3-2.3 2.89-2.87-1.42-1.42L5.3 17.3 3 15v6h6zm12-6l-2.3 2.3-2.87-2.89-1.42 1.42 2.89 2.87L15 21h6v-6z"/>
             </svg>
             <h3>Rutas Editables</h3>
-            <p>Navegación por breadcrumbs o escritura manual de ruta.</p>
+            <p>Navegación por breadcrumbs o escritura manual de ruta. Botón para ir al directorio padre.</p>
           </article>
           <article class="feature-card">
             <svg viewBox="0 0 24 24" fill="currentColor">
               <path d="M15 9H9V5H15V9ZM12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM17 13H13V18H11V13H7V11H17V13Z"/>
             </svg>
             <h3>Espacio en Disco</h3>
-            <p>Muestra almacenamiento disponible local y remotamente.</p>
+            <p>Muestra almacenamiento disponible local y remotamente con barras de uso.</p>
           </article>
+          <article class="feature-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>
+              <path d="M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2"/>
+            </svg>
+            <h3>Tema Claro / Oscuro</h3>
+            <p>Cambia entre tema oscuro, claro o sigue la preferencia del sistema.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="usage" id="usage">
+      <div class="container">
+        <h2>Guía de Uso</h2>
+        <div class="usage-steps">
+          <div class="usage-step">
+            <span class="usage-num">1</span>
+            <div class="usage-body">
+              <h3>Conecta tu dispositivo</h3>
+              <p>Conecta tu Android por USB y activa la <strong>depuración USB</strong> en <em>Ajustes → Opciones de desarrollador</em>. La app detectará el dispositivo automáticamente.</p>
+            </div>
+          </div>
+          <div class="usage-step">
+            <span class="usage-num">2</span>
+            <div class="usage-body">
+              <h3>Navega y selecciona</h3>
+              <p>Explora los archivos en ambos paneles. Usa los checkboxes o <kbd>Cmd</kbd>+clic para seleccionar múltiples archivos. Cambia a vista cuadrícula con el ícono de cuadrícula en el header.</p>
+            </div>
+          </div>
+          <div class="usage-step">
+            <span class="usage-num">3</span>
+            <div class="usage-body">
+              <h3>Transfiere archivos</h3>
+              <p>Presiona el botón <strong>→</strong> para copiar a Android (push) o <strong>←</strong> para copiar a Mac (pull). Las transferencias aparecen en el panel de progreso en la parte inferior.</p>
+            </div>
+          </div>
+          <div class="usage-step">
+            <span class="usage-num">4</span>
+            <div class="usage-body">
+              <h3>Gestiona transferencias</h3>
+              <p>Haz hover sobre una transferencia para ver los botones de <strong>pausa</strong> y <strong>cancelar</strong>. Al reanudar, la transferencia continúa desde donde se pausó. Hasta 5 archivos se transfieren simultáneamente.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <section class="requirements">
+      <div class="container">
+        <h2>Requisitos</h2>
+        <div class="req-grid">
+          <div class="req-card">
+            <h3>macOS</h3>
+            <ul>
+              <li>macOS 11 Big Sur o superior</li>
+              <li>Intel o Apple Silicon (M1–M4)</li>
+
+            </ul>
+          </div>
+          <div class="req-card">
+            <h3>Android</h3>
+            <ul>
+              <li>Android 5.0 (Lollipop) o superior</li>
+              <li>Depuración USB activada</li>
+              <li>Cable USB para datos</li>
+            </ul>
+          </div>
+          <div class="req-card">
+            <h3>Descarga</h3>
+            <ul>
+              <li>App nativa construida con Tauri</li>
+              <li>No requiere Java ni Electron</li>
+              <li>Binario firmado para macOS</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -103,6 +205,13 @@
         <p class="download-subtitle">
           Elige la versión para tu Mac. Ambas incluyen la misma funcionalidad completa.
         </p>
+        <div class="version-badge">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+            <polyline points="17 6 23 6 23 12"/>
+          </svg>
+          v0.3.0
+        </div>
         <div class="download-cards">
           <a href="https://github.com/ALbertE03/file_transfer/releases/latest/download/file_transfer-x86_64.dmg" class="download-card" id="download-x64">
             <div class="chip-icon">
@@ -140,7 +249,12 @@
   <footer>
     <div class="container footer-inner">
       <p>Hecho con ❤️ usando <a href="https://tauri.app" target="_blank" rel="noopener">Tauri</a></p>
-      <p><a href="https://github.com/ALbertE03/file_transfer" target="_blank" rel="noopener">GitHub</a></p>
+      <p>
+        <a href="https://github.com/ALbertE03/file_transfer" target="_blank" rel="noopener" class="footer-gh">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </p>
     </div>
   </footer>
 
