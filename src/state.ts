@@ -36,9 +36,13 @@ export let btnPushEl: HTMLButtonElement;
 export let btnPullEl: HTMLButtonElement;
 
 export let onboardingOverlayEl: HTMLElement;
-export let progressOverlayEl: HTMLElement;
-export let progressCountEl: HTMLElement;
-export let progressListEl: HTMLElement;
+
+export let localProgressEl: HTMLElement;
+export let localProgressCountEl: HTMLElement;
+export let localProgressListEl: HTMLElement;
+export let remoteProgressEl: HTMLElement;
+export let remoteProgressCountEl: HTMLElement;
+export let remoteProgressListEl: HTMLElement;
 
 export let btnLocalNewFolder: HTMLButtonElement;
 export let btnLocalRename: HTMLButtonElement;
@@ -63,6 +67,14 @@ export function setRemoteFiles(f: RemoteFile[]) { remoteFiles = f; }
 export type Theme = "dark" | "light" | "system";
 export let theme: Theme = "system";
 export let themeSelectEl: HTMLSelectElement;
+
+export let localViewMode: "list" | "grid" = "list";
+export let remoteViewMode: "list" | "grid" = "list";
+export let btnLocalViewToggle: HTMLButtonElement;
+export let btnRemoteViewToggle: HTMLButtonElement;
+
+export function setLocalViewMode(v: "list" | "grid") { localViewMode = v; }
+export function setRemoteViewMode(v: "list" | "grid") { remoteViewMode = v; }
 
 export function setTheme(t: Theme) {
   theme = t;
@@ -104,9 +116,13 @@ export function initDom() {
   btnPullEl = document.querySelector("#btn-pull") as HTMLButtonElement;
 
   onboardingOverlayEl = document.querySelector("#onboarding-overlay") as HTMLElement;
-  progressOverlayEl = document.querySelector("#progress-overlay") as HTMLElement;
-  progressCountEl = document.querySelector("#progress-count") as HTMLElement;
-  progressListEl = document.querySelector("#progress-list") as HTMLElement;
+
+  localProgressEl = document.querySelector("#local-pane-progress") as HTMLElement;
+  localProgressCountEl = document.querySelector("#local-progress-count") as HTMLElement;
+  localProgressListEl = document.querySelector("#local-progress-list") as HTMLElement;
+  remoteProgressEl = document.querySelector("#remote-pane-progress") as HTMLElement;
+  remoteProgressCountEl = document.querySelector("#remote-progress-count") as HTMLElement;
+  remoteProgressListEl = document.querySelector("#remote-progress-list") as HTMLElement;
 
   btnLocalNewFolder = document.querySelector("#btn-local-new-folder") as HTMLButtonElement;
   btnLocalRename = document.querySelector("#btn-local-rename") as HTMLButtonElement;
@@ -117,4 +133,8 @@ export function initDom() {
   btnRemoteDelete = document.querySelector("#btn-remote-delete") as HTMLButtonElement;
 
   themeSelectEl = document.querySelector("#theme-select") as HTMLSelectElement;
+
+  btnLocalViewToggle = document.querySelector("#btn-local-view-toggle") as HTMLButtonElement;
+  btnRemoteViewToggle = document.querySelector("#btn-remote-view-toggle") as HTMLButtonElement;
+
 }

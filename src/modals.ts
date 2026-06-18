@@ -18,6 +18,12 @@ function createModal(
   const content = document.createElement("div");
   content.className = "modal-content";
 
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "modal-close";
+  closeBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
+  closeBtn.addEventListener("click", () => modalDiv.remove());
+  content.appendChild(closeBtn);
+
   const h3 = document.createElement("h3");
   h3.textContent = title;
   content.appendChild(h3);
@@ -43,6 +49,7 @@ function createModal(
 
   const runCallback = async () => {
     confirmBtn.disabled = true;
+    confirmBtn.textContent = "...";
     await callback(input.value);
     modalDiv.remove();
   };
@@ -55,6 +62,10 @@ function createModal(
   buttons.appendChild(confirmBtn);
   content.appendChild(buttons);
   modalDiv.appendChild(content);
+
+  modalDiv.addEventListener("click", (e) => {
+    if (e.target === modalDiv) modalDiv.remove();
+  });
 
   setTimeout(() => input.focus(), 50);
 
@@ -126,13 +137,19 @@ function showConfirmModal(message: string): Promise<boolean> {
 
     const content = document.createElement("div");
     content.className = "modal-content";
-    content.style.width = "400px";
+
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "modal-close";
+    closeBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
+    closeBtn.addEventListener("click", () => { modalDiv.remove(); resolve(false); });
+    content.appendChild(closeBtn);
+
+    const h3 = document.createElement("h3");
+    h3.textContent = "Confirm Delete";
+    content.appendChild(h3);
 
     const p = document.createElement("p");
     p.textContent = message;
-    p.style.marginBottom = "1.25rem";
-    p.style.lineHeight = "1.5";
-    p.style.whiteSpace = "pre-line";
     content.appendChild(p);
 
     const buttons = document.createElement("div");
@@ -148,7 +165,7 @@ function showConfirmModal(message: string): Promise<boolean> {
     buttons.appendChild(cancelBtn);
 
     const confirmBtn = document.createElement("button");
-    confirmBtn.className = "btn-modal confirm";
+    confirmBtn.className = "btn-modal danger";
     confirmBtn.textContent = "Delete";
     confirmBtn.addEventListener("click", () => {
       modalDiv.remove();
@@ -158,6 +175,11 @@ function showConfirmModal(message: string): Promise<boolean> {
 
     content.appendChild(buttons);
     modalDiv.appendChild(content);
+
+    modalDiv.addEventListener("click", (e) => {
+      if (e.target === modalDiv) { modalDiv.remove(); resolve(false); }
+    });
+
     document.body.appendChild(modalDiv);
   });
 }

@@ -62,12 +62,22 @@
             <h2 class="pane-title">macOS Local</h2>
           </div>
           <div class="pane-header-actions">
+            <div class="pane-header-actions-group">
             <button class="btn-icon" id="btn-local-new-folder" title="New Folder">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 5v14M5 12h14" />
               </svg>
             </button>
+            <button class="btn-icon btn-view-toggle" id="btn-local-view-toggle" title="Toggle grid view">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" />
+              </svg>
+            </button>
           </div>
+        </div>
         </div>
 
         <div class="navigation-bar">
@@ -107,6 +117,17 @@
           </table>
         </div>
 
+        <div class="pane-progress" id="local-pane-progress" hidden>
+          <div class="pane-progress-header">
+            <span class="pane-progress-title">
+              <svg viewBox="0 0 24 24"><path d="M15 12h-8m0 0l4-4m-4 4l4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Pull to Mac
+            </span>
+            <span class="pane-progress-count" id="local-progress-count">0 / 0</span>
+          </div>
+          <div class="pane-progress-list" id="local-progress-list"></div>
+        </div>
+
         <div class="pane-footer">
           <span class="selection-info" id="local-selection-info">0 selected</span>
           <div class="pane-actions">
@@ -143,12 +164,22 @@
             <h2 class="pane-title">Android Device</h2>
           </div>
           <div class="pane-header-actions">
+            <div class="pane-header-actions-group">
             <button class="btn-icon" id="btn-remote-new-folder" title="New Folder">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 5v14M5 12h14" />
               </svg>
             </button>
+            <button class="btn-icon btn-view-toggle" id="btn-remote-view-toggle" title="Toggle grid view">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" />
+              </svg>
+            </button>
           </div>
+        </div>
         </div>
 
         <div class="navigation-bar">
@@ -189,6 +220,17 @@
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <div class="pane-progress" id="remote-pane-progress" hidden>
+          <div class="pane-progress-header">
+            <span class="pane-progress-title">
+              <svg viewBox="0 0 24 24"><path d="M9 12h8m0 0l-4-4m4 4l-4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Push to Android
+            </span>
+            <span class="pane-progress-count" id="remote-progress-count">0 / 0</span>
+          </div>
+          <div class="pane-progress-list" id="remote-progress-list"></div>
         </div>
 
         <div class="pane-footer">
@@ -248,15 +290,6 @@
 
     </main>
 
-
-    <!-- Transfer HUD overlay -->
-    <div class="progress-overlay" id="progress-overlay" style="display: none;">
-      <div class="progress-header">
-        <span class="progress-title">Transferring files...</span>
-        <span class="progress-count" id="progress-count">0 / 0</span>
-      </div>
-      <div class="progress-list" id="progress-list"></div>
-    </div>
 
   </div>
 </body>

@@ -350,6 +350,73 @@ pub async fn rename_remote_item(device_id: String, old_path: String, new_path: S
 }
 
 #[tauri::command]
+pub fn is_local_dir(path: String) -> bool {
+    std::fs::metadata(&path).map(|m| m.is_dir()).unwrap_or(false)
+}
+
+#[tauri::command]
+pub async fn is_remote_dir(device_id: String, path: String) -> bool {
+    let adb = get_adb_path();
+    let cmd = format!("test -d {} && echo yes || echo no", shell_escape(&path));
+    let output = Command::new(&adb)
+        .arg("-s")
+        .arg(&device_id)
+        .arg("shell")
+        .arg(&cmd)
+        .output()
+        .await;
+    match output {
+        Ok(o) => String::from_utf8_lossy(&o.stdout).trim() == "yes",
+        Err(_) => false,
+    }
+}
+
+fn shell_escape(path: &str) -> String {
+    format!("'{}'", path.replace('\'', "'\\''"))
+}
+
+#[tauri::command]
+pub fn list_local_files_recursive(path: String) -> Result<Vec<String>, String> {
+    let mut files = Vec::new();
+    collect_local_files(&path, &mut files)?;
+    Ok(files)
+}
+
+fn collect_local_files(dir_path: &str, files: &mut Vec<String>) -> Result<(), String> {
+    let dir = std::fs::read_dir(Path::new(dir_path)).map_err(|e| format!("Cannot read '{}': {}", dir_path, e))?;
+    for entry in dir.flatten() {
+        let path = entry.path();
+        let path_str = path.to_string_lossy().to_string();
+        if path.is_dir() {
+            collect_local_files(&path_str, files)?;
+        } else {
+            files.push(path_str);
+        }
+    }
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn list_remote_files_recursive(device_id: String, path: String) -> Result<Vec<String>, String> {
+    let adb = get_adb_path();
+    let escaped = path.replace("'", "'\\''");
+    let output = Command::new(&adb)
+        .arg("-s")
+        .arg(&device_id)
+        .arg("shell")
+        .arg(format!("find '{}' -type f 2>/dev/null", escaped))
+        .output()
+        .await
+        .map_err(|e| format!("Failed to list remote files: {}", e))?;
+    if !output.status.success() {
+        return Err(String::from_utf8_lossy(&output.stderr).to_string());
+    }
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let files: Vec<String> = stdout.lines().map(|l| l.to_string()).collect();
+    Ok(files)
+}
+
+#[tauri::command]
 pub fn get_home_directories() -> Result<(String, String), String> {
     let local_home = std::env::var("HOME").unwrap_or_else(|_| "/Users".to_string());
     let remote_home = "/storage/emulated/0".to_string();

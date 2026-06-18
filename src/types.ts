@@ -29,7 +29,7 @@ export interface ProgressPayload {
   total: number;
   percentage: number;
   speed: string;
-  status: "running" | "file_ok" | "file_error" | "completed" | "error";
+  status: "running" | "file_ok" | "file_error" | "completed" | "error" | "paused";
   error_message: string | null;
 }
 
@@ -41,4 +41,13 @@ export interface DiskInfo {
   used: number;
   pct: number;
   is_removable: boolean;
+}
+
+export interface QueueItem {
+  source: string;
+  destPath: string;
+  deviceId: string;
+  direction: "push" | "pull";
+  status: "pending" | "running" | "paused" | "completed" | "cancelled" | "error";
+  lastPct: number;
 }

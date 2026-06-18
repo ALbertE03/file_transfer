@@ -3,6 +3,7 @@ import { LocalFile, DiskInfo } from "./types";
 import {
   localFiles, localPath, selectedLocalPaths,
   localPathInputEl, localFileListEl, localBreadcrumbsEl, localDrivesEl, localSelectAllEl,
+  localViewMode,
   setLocalFiles, setLocalPath,
 } from "./state";
 import { formatBytes, getFolderIcon, getFileIcon, updateActionStates, renderBreadcrumbs, renderDisks } from "./ui";
@@ -28,12 +29,12 @@ export async function loadLocalFiles(path: string, keepSelection = false) {
 
 function renderLocalTable() {
   localFileListEl.innerHTML = "";
+  localFileListEl.closest(".file-table")?.classList.toggle("view-grid", localViewMode === "grid");
 
   if (localFiles.length === 0) {
     localFileListEl.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Empty folder</td></tr>';
     return;
   }
-
   localFiles.forEach((file) => {
     const tr = document.createElement("tr");
     tr.dataset.path = file.path;

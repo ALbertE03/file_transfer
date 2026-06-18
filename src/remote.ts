@@ -3,6 +3,7 @@ import { RemoteFile, DiskInfo } from "./types";
 import {
   remoteFiles, remotePath, selectedRemotePaths, selectedDeviceSerial,
   remotePathInputEl, remoteFileListEl, remoteBreadcrumbsEl, remoteDrivesEl, remoteSelectAllEl,
+  remoteViewMode,
   setRemoteFiles, setRemotePath,
 } from "./state";
 import { formatBytes, getFolderIcon, getFileIcon, getSymlinkIcon, updateActionStates, renderBreadcrumbs, renderDisks } from "./ui";
@@ -32,12 +33,12 @@ export async function loadRemoteFiles(path: string, keepSelection = false) {
 
 function renderRemoteTable() {
   remoteFileListEl.innerHTML = "";
+  remoteFileListEl.closest(".file-table")?.classList.toggle("view-grid", remoteViewMode === "grid");
 
   if (remoteFiles.length === 0) {
     remoteFileListEl.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Empty folder</td></tr>';
     return;
   }
-
   remoteFiles.forEach((file) => {
     const tr = document.createElement("tr");
     tr.dataset.path = file.path;
