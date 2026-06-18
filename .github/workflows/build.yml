@@ -55,36 +55,23 @@ jobs:
           volname="file_transfer"
           tmpdir=$(mktemp -d)
           cp -R "$app" "$tmpdir/"
-          ln -s /Applications "$tmpdir/Applications"
 
           dmg_root="src-tauri/target/${{ matrix.target }}/release/bundle/dmg"
           mkdir -p "$dmg_root"
           dmg_path="$dmg_root/$volname.dmg"
+          rm -f "$dmg_path"
 
-          hdiutil create -volname "$volname" -srcfolder "$tmpdir" -ov -format UDRW \
-            -imagekey zlib-level=9 "$dmg_path"
+          brew install create-dmg
 
-          mountpoint=$(hdiutil attach -readwrite -noverify -noautoopen "$dmg_path" | \
-            tail -1 | awk '{print $NF}')
-          echo "Mounted at: $mountpoint"
-          ls -la "$mountpoint"
-
-          osascript \
-            -e 'tell application "Finder"' \
-            -e 'tell folder "file_transfer" of disk "file_transfer"' \
-            -e 'set icon size of icon view options to 96' \
-            -e 'set arrangement of icon view options to not arranged' \
-            -e 'set current view to icon view' \
-            -e 'set bounds of window of disk "file_transfer" to {100, 100, 620, 420}' \
-            -e 'set position of item "file_transfer.app" to {120, 200}' \
-            -e 'set position of item "Applications" to {400, 200}' \
-            -e 'end tell' \
-            -e 'end tell'
-
-          hdiutil detach "$mountpoint" -quiet
-          hdiutil convert "$dmg_path" -ov -format UDZO -imagekey zlib-level=9 \
-            -o "${dmg_path%.dmg}-final.dmg"
-          mv "${dmg_path%.dmg}-final.dmg" "$dmg_path"
+          create-dmg \
+            --volname "file_transfer" \
+            --window-pos 100 100 \
+            --window-size 520 360 \
+            --icon-size 96 \
+            --icon "file_transfer.app" 120 200 \
+            --app-drop-link 400 200 \
+            "$dmg_path" \
+            "$tmpdir/" 2>&1
 
           rm -rf "$tmpdir"
           echo "DMG_PATH=$dmg_path" >> $GITHUB_ENV
