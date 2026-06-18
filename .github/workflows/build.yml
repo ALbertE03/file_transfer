@@ -45,13 +45,16 @@ jobs:
         run: npm run tauri build -- --target ${{ matrix.target }}
         env:
           TAURI_SKIP_CODESIGNING: "true"
-          TAURI_SIGNING_PRIVATE_KEY: ""
-          NOTARY_PROFILE_NAME: ""
 
-      - name: Locate DMG
+      - name: Ad-hoc sign and repack DMG
         run: |
+          app=$(find src-tauri/target/${{ matrix.target }}/release/bundle/macos -name "*.app" | head -1)
+          echo "Signing: $app"
+          codesign --force --deep --sign - "$app"
           dmg=$(find src-tauri/target/${{ matrix.target }}/release/bundle/dmg -name "*.dmg" | head -1)
-          echo "DMG_PATH=$dmg" >> $GITHUB_ENV
+          signed_dmg="${dmg%.dmg}-signed.dmg"
+          hdiutil create -volname file_transfer -srcfolder "$app" -ov -format UDZO "$signed_dmg"
+          echo "DMG_PATH=$signed_dmg" >> $GITHUB_ENV
 
       - name: Rename DMG
         run: |
