@@ -65,7 +65,9 @@ jobs:
             -imagekey zlib-level=9 "$dmg_path"
 
           mountpoint=$(hdiutil attach -readwrite -noverify -noautoopen "$dmg_path" | \
-            grep "/Volumes/$volname" | awk '{print $3}')
+            tail -1 | awk '{print $NF}')
+          echo "Mounted at: $mountpoint"
+          ls -la "$mountpoint"
 
           osascript \
             -e 'tell application "Finder"' \
@@ -77,8 +79,7 @@ jobs:
             -e 'set position of item "file_transfer.app" to {120, 200}' \
             -e 'set position of item "Applications" to {400, 200}' \
             -e 'end tell' \
-            -e 'end tell' \
-            2>/dev/null || true
+            -e 'end tell'
 
           hdiutil detach "$mountpoint" -quiet
           hdiutil convert "$dmg_path" -ov -format UDZO -imagekey zlib-level=9 \
