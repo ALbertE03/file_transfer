@@ -51,13 +51,40 @@ jobs:
           app=$(find src-tauri/target/${{ matrix.target }}/release/bundle/macos -name "*.app" | head -1)
           echo "Signing: $app"
           codesign --force --deep --sign - "$app"
+
           volname="file_transfer"
           tmpdir=$(mktemp -d)
           cp -R "$app" "$tmpdir/"
           ln -s /Applications "$tmpdir/Applications"
-          dmg_path="src-tauri/target/${{ matrix.target }}/release/bundle/dmg/$volname.dmg"
-          hdiutil create -volname "$volname" -srcfolder "$tmpdir" -ov -format UDZO \
+
+          dmg_root="src-tauri/target/${{ matrix.target }}/release/bundle/dmg"
+          mkdir -p "$dmg_root"
+          dmg_path="$dmg_root/$volname.dmg"
+
+          hdiutil create -volname "$volname" -srcfolder "$tmpdir" -ov -format UDRW \
             -imagekey zlib-level=9 "$dmg_path"
+
+          mountpoint=$(hdiutil attach -readwrite -noverify -noautoopen "$dmg_path" | \
+            grep "/Volumes/$volname" | awk '{print $3}')
+
+          osascript <<'AS' 2>/dev/null || true
+tell application "Finder"
+  tell folder "file_transfer" of disk "file_transfer"
+    set icon size of icon view options to 96
+    set arrangement of icon view options to not arranged
+    set current view to icon view
+    set bounds of window of disk "file_transfer" to {100, 100, 620, 420}
+    set position of item "file_transfer.app" to {120, 200}
+    set position of item "Applications" to {400, 200}
+  end tell
+end tell
+AS
+
+          hdiutil detach "$mountpoint" -quiet
+          hdiutil convert "$dmg_path" -ov -format UDZO -imagekey zlib-level=9 \
+            -o "${dmg_path%.dmg}-final.dmg"
+          mv "${dmg_path%.dmg}-final.dmg" "$dmg_path"
+
           rm -rf "$tmpdir"
           echo "DMG_PATH=$dmg_path" >> $GITHUB_ENV
 
