@@ -51,10 +51,15 @@ jobs:
           app=$(find src-tauri/target/${{ matrix.target }}/release/bundle/macos -name "*.app" | head -1)
           echo "Signing: $app"
           codesign --force --deep --sign - "$app"
-          dmg=$(find src-tauri/target/${{ matrix.target }}/release/bundle/dmg -name "*.dmg" | head -1)
-          signed_dmg="${dmg%.dmg}-signed.dmg"
-          hdiutil create -volname file_transfer -srcfolder "$app" -ov -format UDZO "$signed_dmg"
-          echo "DMG_PATH=$signed_dmg" >> $GITHUB_ENV
+          volname="file_transfer"
+          tmpdir=$(mktemp -d)
+          cp -R "$app" "$tmpdir/"
+          ln -s /Applications "$tmpdir/Applications"
+          dmg_path="src-tauri/target/${{ matrix.target }}/release/bundle/dmg/$volname.dmg"
+          hdiutil create -volname "$volname" -srcfolder "$tmpdir" -ov -format UDZO \
+            -imagekey zlib-level=9 "$dmg_path"
+          rm -rf "$tmpdir"
+          echo "DMG_PATH=$dmg_path" >> $GITHUB_ENV
 
       - name: Rename DMG
         run: |
