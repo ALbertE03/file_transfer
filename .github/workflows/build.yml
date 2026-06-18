@@ -67,18 +67,18 @@ jobs:
           mountpoint=$(hdiutil attach -readwrite -noverify -noautoopen "$dmg_path" | \
             grep "/Volumes/$volname" | awk '{print $3}')
 
-          osascript <<'AS' 2>/dev/null || true
-tell application "Finder"
-  tell folder "file_transfer" of disk "file_transfer"
-    set icon size of icon view options to 96
-    set arrangement of icon view options to not arranged
-    set current view to icon view
-    set bounds of window of disk "file_transfer" to {100, 100, 620, 420}
-    set position of item "file_transfer.app" to {120, 200}
-    set position of item "Applications" to {400, 200}
-  end tell
-end tell
-AS
+          osascript \
+            -e 'tell application "Finder"' \
+            -e 'tell folder "file_transfer" of disk "file_transfer"' \
+            -e 'set icon size of icon view options to 96' \
+            -e 'set arrangement of icon view options to not arranged' \
+            -e 'set current view to icon view' \
+            -e 'set bounds of window of disk "file_transfer" to {100, 100, 620, 420}' \
+            -e 'set position of item "file_transfer.app" to {120, 200}' \
+            -e 'set position of item "Applications" to {400, 200}' \
+            -e 'end tell' \
+            -e 'end tell' \
+            2>/dev/null || true
 
           hdiutil detach "$mountpoint" -quiet
           hdiutil convert "$dmg_path" -ov -format UDZO -imagekey zlib-level=9 \
